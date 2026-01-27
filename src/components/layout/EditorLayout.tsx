@@ -3,9 +3,11 @@ import { TopNav } from './TopNav';
 import { LeftSidebar } from './LeftSidebar';
 import { AssetPanel } from '../assets/AssetPanel';
 import { ElementsPanel } from '../elements/ElementsPanel';
-import { Canvas } from '../canvas/Canvas';
-import { PropertiesPanel } from '../properties/PropertiesPanel';
-import { Timeline } from '../timeline/Timeline';
+import { CanvasSVG } from '../canvas/CanvasSVG';
+import { PropertiesPanelFigma } from '../properties/PropertiesPanelFigma';
+import '../properties/PropertiesPanelFigma.css';
+import { TimelineFigma } from '../timeline/TimelineFigma';
+import '../timeline/TimelineFigma.css';
 
 export function EditorLayout() {
   const [activePanel, setActivePanel] = useState<'upload' | 'elements' | 'live' | null>('upload');
@@ -29,9 +31,9 @@ export function EditorLayout() {
       )}
       {!activePanel && <div style={{ gridArea: 'assets' }} />}
       
-      <Canvas />
-      <PropertiesPanel />
-      <Timeline />
+      <CanvasSVG />
+      <PropertiesPanelFigma />
+      <TimelineFigma />
     </div>
   );
 }

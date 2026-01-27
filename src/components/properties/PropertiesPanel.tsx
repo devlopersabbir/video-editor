@@ -1,37 +1,34 @@
 import { useStore } from '../../store/store';
-import { ImageProperties } from './ImageProperties';
-import { TextProperties } from './TextProperties';
+import { ImagePropertiesNew } from './ImagePropertiesNew';
+import { TextPropertiesNew } from './TextPropertiesNew';
 import { QRProperties } from './QRProperties';
 import { ShapeProperties } from './ShapeProperties';
 
 export function PropertiesPanel() {
-  const { elements, canvas } = useStore();
+  const { canvas, elements } = useStore();
+  const selectedId = canvas.selectedElementIds[0];
+  const selectedElement = elements.find((el) => el.id === selectedId);
 
-  const selectedElement = canvas.selectedElementIds.length === 1
-    ? elements.find((el) => el.id === canvas.selectedElementIds[0])
-    : null;
+  if (!selectedElement) {
+    return (
+      <div className="properties-area panel" style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        color: 'var(--color-text-secondary)',
+        fontSize: '0.875rem'
+      }}>
+        Select an element to edit its properties
+      </div>
+    );
+  }
 
   return (
-    <div className="properties-panel panel">
-      <div className="panel-header">Properties</div>
-      <div className="panel-content" style={{ overflowY: 'auto', height: 'calc(100% - 60px)' }}>
-        {selectedElement ? (
-          <>
-            {(selectedElement.type === 'image' || selectedElement.type === 'video') && (
-              <ImageProperties element={selectedElement} />
-            )}
-            {selectedElement.type === 'text' && <TextProperties element={selectedElement} />}
-            {selectedElement.type === 'qr' && <QRProperties element={selectedElement} />}
-            {(selectedElement.type === 'rectangle' ||
-              selectedElement.type === 'ellipse' ||
-              selectedElement.type === 'triangle') && <ShapeProperties element={selectedElement} />}
-          </>
-        ) : (
-          <div style={{ color: 'var(--color-text-secondary)', textAlign: 'center', paddingTop: 'var(--spacing-xl)' }}>
-            Select an element to edit its properties
-          </div>
-        )}
-      </div>
+    <div className="properties-area">
+      {(selectedElement.type === 'image' || selectedElement.type === 'video') && <ImagePropertiesNew />}
+      {selectedElement.type === 'text' && <TextPropertiesNew />}
+      {selectedElement.type === 'qr' && <QRProperties />}
+      {(selectedElement.type === 'rectangle' || selectedElement.type === 'ellipse' || selectedElement.type === 'triangle') && <ShapeProperties />}
     </div>
   );
 }
